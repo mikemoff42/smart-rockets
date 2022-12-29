@@ -30,13 +30,22 @@ function setup() {
 
 function draw() {
   background(0);
-  
+  drawOutline();
   setTarget();
   showRockets();
   showCount();
   regenRockets();
-
 }
+
+function drawOutline(){
+  stroke(255,0,0);
+  strokeWeight(width/150);
+  line(0,0,width,0);
+  line(0,0,0,height);
+  line(0,height,width,height);
+  line(width,0,width,height);
+}
+
 function resetButton(){
   resetsim = createButton('Reset');
   resetsim.mousePressed(clearBlockers);

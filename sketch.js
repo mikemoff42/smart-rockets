@@ -1,4 +1,4 @@
-const dna=400;
+const dna=500;
 const Mag=0.12
 let rockets=[];
 let totalRockets = 250;
@@ -21,7 +21,7 @@ let resetSim=false;
 
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(900, 900);
   targetRadius = width/25;
   resetButton();
   Reset();
@@ -61,25 +61,23 @@ function Reset(){
 
 function regenRockets(){
     if (count > dna){
+      let maxF =0;
+      let minT =dna;
       for(let i=0;i<rockets.length;i++){
         rockets[i].setFitness();
-        // let d;
-        // if (rockets[i].arrived) rockets[i].dist=0.5 + (10/rockets[i].arrivedTime);
-        // else {
-        //   d=dist(rockets[i].pos.x,rockets[i].pos.y,target.x,target.y);
-        //   rockets[i].dist = 4/d - (1-(rockets[i].crashedTime/dna))/100;
-        // }
-        // if(rockets[i].dist < 0) console.log("neg");
+        if (rockets[i].fitnessScore > maxF) maxF = rockets[i].fitnessScore;
+        if (rockets[i].arrivedTime < minT) minT = rockets[i].arrivedTime;
+
       }
       tempRockets = [];
       for (let i=0;i<rockets.length;i++){
+        if (rockets[i].fitnessScore == maxF) rockets[i].fitnessScore+=200;
         for (let j=0;j<rockets[i].fitnessScore;j++){
           let t = new Rocket(rockets[i].genes);
           t.index = i;
           tempRockets.push(t);
         }
       }
-      console.log(tempRockets.length);
       for (let i=0;i<totalRockets;i++){
         let mom = random(tempRockets);
         let dad = random(tempRockets);
@@ -87,7 +85,6 @@ function regenRockets(){
         while (mom.index == dad.index && breakWhile < 10000){
           dad = random(tempRockets);
           breakWhile++;
-          if(breakWhile>9999) console.log('no parents');
         }
         
         Child = [];
@@ -114,12 +111,7 @@ function showRockets(){
   for (let i=0;i<rockets.length;i++) {
     rockets[i].update();
     rockets[i].show();
-  }  
-  // for (let i=rockets.length-1;i>=0;i--) {
-  //   if (rockets[i].crashed){
-  //     rockets.splice(i,1);
-  //   }
-  // }  
+  }
 }
 
 function showCount(){
@@ -138,7 +130,6 @@ function showCount(){
 
 function setTarget(){
   target = createVector(width/2,height*0.1);
-  //circle(target.x,target.y,targetRadius);
   imageMode(CENTER);
   image(ship, target.x,target.y, targetRadius*2, targetRadius*1.5);
   stroke(255,0,0,150);
@@ -146,13 +137,7 @@ function setTarget(){
 
 }
 function createBlockers(){
-  // lineX1=[];
-  // lineX2=[];
-  // lineY=[];
-  // lineX1[0] = width/4;
-  // lineX2[0] = width*0.75;
-  // lineY[0] = height*0.65;
-  
+  strokeWeight(width/90);
   for (let i=0;i<lineE.length;i++){
     line(lineB[i].x,lineB[i].y,lineE[i].x,lineE[i].y);
   }

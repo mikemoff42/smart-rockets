@@ -131,7 +131,7 @@ function showCount(){
 function setTarget(){
   target = createVector(width/2,height*0.1);
   imageMode(CENTER);
-  image(ship, target.x,target.y, targetRadius*2, targetRadius*1.5);
+  image(ship, target.x,target.y, targetRadius*2, targetRadius*1.25);
   stroke(255,0,0,150);
   createBlockers();
 

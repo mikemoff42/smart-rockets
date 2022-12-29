@@ -33,7 +33,7 @@ class Rocket {
       d = 3/(dist(this.pos.x,this.pos.y,target.x,target.y)) * 1000;
     crashtime = (this.crashedTime/dna) * 10;
     if (this.arrived){
-      landed = 1000;
+      landed = 100;
       landed+= (1 - (this.arrivedTime/dna))*200;
     }
     this.fitnessScore = d+landed+crashtime;
@@ -61,7 +61,6 @@ class Rocket {
     push();
     translate(this.pos.x,this.pos.y);
     rotate(this.heading);
-    //rect(0,0,50,8);
     image(head, 0, 0, 8, 8);
     pop();
   }
@@ -77,14 +76,7 @@ class Rocket {
       this.crashed = true;
       this.crashedTime = count;
     }
-    
-    // for(let i=0;i<lineE.length;i++){
-    //   if(this.pos.x > lineB[i].x && this.pos.x < lineE[i].x && this.pos.y > lineB[i].y - 8 && this.pos.y < lineB[i].y +8 && !this.crashed)
-    //     this.crashed = true;
-    //     this.crashedTime = count;
-    // }
-    
-    
+   
     for(let i=0;i<lineE.length;i++) {
       let t = p5.Vector.sub(lineB[i],lineE[i]);
       let a = t.y/t.x;

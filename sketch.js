@@ -45,12 +45,19 @@ function drawOutline(){
   line(0,height,width,height);
   line(width,0,width,height);
 }
-
 function resetButton(){
   resetsim = createButton('Reset');
   resetsim.mousePressed(clearBlockers);
   resetsim.size(width/10);
   resetsim.position(width - width/10,0);
+  
+  restartGen = createButton('Reset Gen');
+  restartGen.mousePressed(restartGeneration);
+  restartGen.size(width/10);
+  restartGen.position(width - width/10,width-width/40);
+}
+function restartGeneration(){
+  Reset();
 }
 function clearBlockers(){
   lineB=[];
@@ -78,6 +85,9 @@ function regenRockets(){
         if (rockets[i].arrivedTime < minT) minT = rockets[i].arrivedTime;
 
       }
+      console.log('Max Fitness: '+ maxF);
+      console.log('Best time: '+ minT);
+      
       tempRockets = [];
       for (let i=0;i<rockets.length;i++){
         if (rockets[i].fitnessScore == maxF) rockets[i].fitnessScore+=200;
@@ -87,6 +97,9 @@ function regenRockets(){
           tempRockets.push(t);
         }
       }
+      console.log(tempRockets.length);
+      
+      let tempS=0;
       for (let i=0;i<totalRockets;i++){
         let mom = random(tempRockets);
         let dad = random(tempRockets);
@@ -94,6 +107,8 @@ function regenRockets(){
         while (mom.index == dad.index && breakWhile < 10000){
           dad = random(tempRockets);
           breakWhile++;
+          if (breakWhile>tempS) tempS = breakWhile;
+          if(breakWhile>9999) console.log('no parents');
         }
         
         Child = [];
@@ -110,6 +125,7 @@ function regenRockets(){
         rockets[i] = new Rocket(Child);
         rockets[i].index = i;
       }
+      console.log("max loops: " + tempS);
       count=0;
       tempRockets = [];
       
@@ -169,7 +185,7 @@ function mouseReleased(){
     if (abs(lineB[linecounter].x - mouseX) > 5){
       lineE[linecounter] = createVector(mouseX,mouseY);
       lineComplete=true;
-      resetSim=true;
+      //resetSim=true;
       linecounter++;
     } else
       lineComplete = true;
